@@ -13,5 +13,8 @@
     "sign-service"
   ],
   "author": "abdotop [github.com/abdotop]",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
 }
