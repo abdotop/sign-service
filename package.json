@@ -1,0 +1,17 @@
+{
+  "name": "sign-service",
+  "version": "1.0.0",
+  "description": "sign-service: Blockchain-Powered Document Integrity \nsign-service is a cutting-edge web service that brings the power of blockchain to document authentication. With a user-friendly interface, it allows you to:\n✅ Upload and sign documents with ease \n🔗 Connect your Ethereum wallet seamlessly \n🔒 Store document fingerprints on the blockchain \n🕵️ Verify document authenticity instantly \nSecure. Simple. Blockchain-backed.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "blockchain",
+    "document",
+    "integrity",
+    "sign-service"
+  ],
+  "author": "abdotop [github.com/abdotop]",
+  "license": "MIT"
+}
