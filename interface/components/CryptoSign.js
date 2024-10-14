@@ -4,45 +4,95 @@ function CryptoSign({ setAlertMessage }) {
   const [signature, setSignature] = React.useState("");
   const [verificationResult, setVerificationResult] = React.useState("");
   const [documentHash, setDocumentHash] = React.useState("");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
 
-  const connectWallet = async (setAlertMessage) => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        setWalletConnected(true);
-      } catch (error) {
-        console.error("Failed to connect wallet:", error);
-      }
-    } else {
-      setAlertMessage("Please install MetaMask!");
+  const handleConnectWallet = async () => {
+    if (isSubmitting) {
+      return;
     }
+    if (walletConnected) {
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const response = await connectWallet();
+      console.log("client:",response);
+      setWalletConnected(true);
+    } catch (error) {
+      setWalletConnected(false);
+      setAlertMessage(error.message);
+    }
+    setIsSubmitting(false);
   };
 
-  const signDocument = () => {
+  const handleSignDocument = async () => {
+    if (isSubmitting) {
+      return;
+    }
+    if (!walletConnected) {
+      setAlertMessage("Please connect your wallet first.");
+      return;
+    }
+    
     if (!file) {
       setAlertMessage("Please upload a document first.");
       return;
     }
-    setSignature(
-      "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
-    );
+    setIsSubmitting(true);
+    try {
+      const response = await signDocument(file);
+      console.log("client:",response);
+      setSignature(response.signature);
+      setDocumentHash(response.documentHash);
+    } catch (error) {
+      setAlertMessage(error.message);
+    }
+    setIsSubmitting(false);
   };
 
-  const publishDocument = () => {
+  const handlePublishDocument = async () => {
+    if (!walletConnected) {
+      setAlertMessage("Please connect your wallet first.");
+      return;
+    }
+    if (!file) {
+      setAlertMessage("Please upload a document first.");
+      return;
+    }
     if (!signature) {
       setAlertMessage("Please sign the document first.");
       return;
     }
-    setAlertMessage("Document hash published to blockchain!");
+    if (!documentHash) {
+      setAlertMessage("Please sign the document first.");
+      return;
+    }
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const response = await publishDocument(file, signature, documentHash);
+      console.log("client:",response);
+    } catch (error) {
+      setAlertMessage(error.message);
+    }
   };
 
-  const verifyDocument = () => {
+  const verifyDocument = async () => {
     if (!file) {
       setAlertMessage("Please upload a document to verify.");
       return;
     }
-    setVerificationResult("Document verified. Added on: 2023-05-01");
+    
+    try {
+      const response = await verifyDocument(file);
+      console.log("client:",response);
+      setVerificationResult(response.verificationResult);
+    } catch (error) {
+      setAlertMessage(error.message);
+    }
   };
 
   const retrieveDocument = () => {
@@ -77,13 +127,13 @@ function CryptoSign({ setAlertMessage }) {
             file={file}
             setFile={setFile}
             walletConnected={walletConnected}
-            connectWallet={connectWallet}
+            connectWallet={handleConnectWallet}
           />
           <DocumentActions
             file={file}
             signature={signature}
-            signDocument={signDocument}
-            publishDocument={publishDocument}
+            signDocument={handleSignDocument}
+            publishDocument={handlePublishDocument}
           />
           <VerifyRetrieve
             file={file}

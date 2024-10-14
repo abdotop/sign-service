@@ -30,6 +30,7 @@ function FileUpload({ file, setFile, walletConnected, connectWallet }) {
       </div>
       <button
         onClick={connectWallet}
+        disabled={walletConnected}
         className="w-full bg-orange-500 hover:bg-orange-600 text-gray-900 font-bold py-2 px-4 rounded-full transition duration-300"
       >
         {walletConnected ? "Wallet Connected" : "Connect Wallet"}

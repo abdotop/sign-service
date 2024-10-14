@@ -4,6 +4,9 @@
   "description": "sign-service: Blockchain-Powered Document Integrity \nsign-service is a cutting-edge web service that brings the power of blockchain to document authentication. With a user-friendly interface, it allows you to:\n✅ Upload and sign documents with ease \n🔗 Connect your Ethereum wallet seamlessly \n🔒 Store document fingerprints on the blockchain \n🕵️ Verify document authenticity instantly \nSecure. Simple. Blockchain-backed.",
   "main": "index.js",
   "scripts": {
+    "deploy": "node server/deploy.js",
+    "server": "node server/index.js",
+    "start": "npm run deploy && npm run server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,6 +18,16 @@
   "author": "abdotop [github.com/abdotop]",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.21.1"
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "multer": "^1.4.5-lts.1",
+    "web3": "^4.13.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "dotenv": "^16.4.5",
+    "ethereum-waffle": "^4.0.10",
+    "hardhat": "^2.22.13"
   }
 }
